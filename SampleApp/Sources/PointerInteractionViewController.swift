@@ -23,35 +23,59 @@ final class PointerInteractionViewController : UIViewController
     var content : Element {
         Column { col in
             col.horizontalAlignment = .center
-            col.verticalUnderflow = .justifyToCenter
-            col.minimumVerticalSpacing = 30.0
+            col.minimumVerticalSpacing = 20.0
             
-            col.add(child: InteractiveElement(
-                        content: Label(text: "I Am A Button") {
-                            $0.font = .systemFont(ofSize: 18.0, weight: .semibold)
-                            $0.color = .white
-                        }
-                        .inset(uniform: 20.0)
-                        .box(
-                            background: .systemBlue,
-                            corners: .rounded(radius: 6.0),
-                            shadow: .simple(radius: 6.0, opacity: 0.3, offset: CGSize(width: 0.0, height: 2.0), color: .black)
-                        )
-            ))
+            col.add(
+                child: InteractiveElement(
+                    content: Label(text: "I Am A Button") {
+                        $0.font = .systemFont(ofSize: 18.0, weight: .semibold)
+                        $0.color = .white
+                    }
+                    .inset(uniform: 20.0)
+                    .box(
+                        background: .systemBlue,
+                        corners: .rounded(radius: 6.0),
+                        shadow: .simple(radius: 6.0, opacity: 0.3, offset: CGSize(width: 0.0, height: 2.0), color: .black)
+                    )
+                    .pointerInteraction()
+                )
+            )
             
-            col.add(child: InteractiveElement(
-                        content: Label(text: "I Am A Label") {
-                            $0.color = .darkGray
-                            $0.font = .systemFont(ofSize: 16.0, weight: .semibold)
-                        }
+            col.add(
+                child: InteractiveElement(
+                    content: Label(text: "A Label (Box)") {
+                        $0.color = .darkGray
+                        $0.font = .systemFont(ofSize: 16.0, weight: .semibold)
+                    }
+                    .inset(uniform: 10.0)
+                    .pointerInteraction()
+                )
+            )
+            
+            col.add(
+                child: InteractiveElement(
+                    content: Label(text: "A Label (Rounded)") {
+                        $0.color = .darkGray
+                        $0.font = .systemFont(ofSize: 16.0, weight: .semibold)
+                    }
+                    .inset(uniform: 10.0)
+                    .pointerInteraction { view, _ in
+                        .effect(.automatic, .verticalBeam(length: view.bounds.height))
+                    }
+                )
+            )
+            
+            col.add(
+                child: InteractiveElement(
+                    content: Image(image: UIImage(systemName: "square.and.pencil"))
+                        .constrainedTo(width: .absolute(44.0), height: .absolute(44.0))
                         .inset(uniform: 10.0)
-            ))
-            
-            col.add(child: InteractiveElement(
-                content: Image(image: UIImage(systemName: "square.and.pencil"))
-                            .constrainedTo(width: .absolute(44.0), height: .absolute(44.0))
-                            .inset(uniform: 10.0)
-            ))
+                        .pointerInteraction()
+                )
+            )
+        }
+        .scrollable {
+            $0.alwaysBounceVertical = true
         }
     }
     
@@ -61,7 +85,6 @@ final class PointerInteractionViewController : UIViewController
         
         var elementRepresentation: Element {
             self.content
-                .pointerInteraction()
                 .inset(uniform: 30.0)
                 .box(
                     background: .init(white: 0.95, alpha: 1.0),

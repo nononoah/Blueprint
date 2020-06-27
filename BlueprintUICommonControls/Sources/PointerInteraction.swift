@@ -12,21 +12,22 @@ import BlueprintUI
 public extension Element {
     
     func pointerInteraction(
-        with style : @escaping (UIKeyModifierFlags) -> PointerInteraction.Style = { _ in .automatic }
+        with style : @escaping (UICoordinateSpace, UIKeyModifierFlags) -> PointerInteraction.Style = { _, _ in .automatic }
     ) -> Element {
-        PointerInteraction(self)
+        PointerInteraction(self, with: style)
     }
 }
+
 
 public struct PointerInteraction : Element
 {
     public var wrapping : Element
     
-    public var style : (UIKeyModifierFlags) -> Style
+    public var style : (UICoordinateSpace, UIKeyModifierFlags) -> Style
     
     public init(
         _ wrapping : Element,
-        with style : @escaping (UIKeyModifierFlags) -> Style = { _ in .automatic }
+        with style : @escaping (UICoordinateSpace, UIKeyModifierFlags) -> Style = { _, _ in .automatic }
     ) {
         self.wrapping = wrapping
         self.style = style
@@ -54,7 +55,7 @@ public extension PointerInteraction {
     enum Style {
         
         case effect(Effect, Shape? = nil)
-        case shape(Shape, Axis)
+        case shape(Shape, Axis = [])
         case hidden
         
         public static var automatic : Style {
@@ -234,7 +235,7 @@ fileprivate extension PointerInteraction {
                 return nil
             }
             
-            return self.model.style(self.keyModifiers).toSystem(with: view)
+            return self.model.style(view.coordinateSpace, self.keyModifiers).toSystem(with: view)
         }
     }
 }
