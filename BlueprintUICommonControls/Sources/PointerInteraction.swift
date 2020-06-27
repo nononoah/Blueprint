@@ -9,6 +9,10 @@ import UIKit
 import BlueprintUI
 
 
+// Many types in this file are only available in iOS 13.4 or later, which shipped with Xcode 11.4, which shipped with Swift 5.2.
+#if swift(>=5.2)
+
+
 public extension Element {
     
     func pointerInteraction(
@@ -200,7 +204,7 @@ public extension PointerInteraction {
 
 fileprivate extension PointerInteraction {
     
-    private final class View : UIView, UIPointerInteractionDelegate {
+    final class View : UIView, UIPointerInteractionDelegate {
         
         var model : PointerInteraction
         
@@ -239,3 +243,6 @@ fileprivate extension PointerInteraction {
         }
     }
 }
+
+
+#endif
