@@ -11,6 +11,9 @@ import BlueprintUI
 import BlueprintUICommonControls
 
 
+#if swift(>=5.2)
+
+
 @available(iOS 13.4, *)
 final class PointerInteractionViewController : UIViewController
 {
@@ -94,3 +97,5 @@ final class PointerInteractionViewController : UIViewController
         }
     }
 }
+
+#endif
